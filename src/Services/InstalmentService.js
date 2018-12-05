@@ -44,9 +44,7 @@ const GetLoanTermPaymentPlan = (monthsLoanTerm, amount, interest, monthInstalmen
             ComulativeInterest: comulativeInterest
         });
     }
-
-
-
+    
     return paymentPlan;
 };
 
