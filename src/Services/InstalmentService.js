@@ -1,5 +1,6 @@
 
 const GetMonthlyInstalmentInfo = (monthsLoanTerm, amount, interest) => {
+
     const realInterest = (interest * 360 / 365) / 12 / 100;
     const monthInstalment = (amount * realInterest) / [1 - Math.pow(1 + realInterest, monthsLoanTerm * -1)];
     const paymentPlan = GetLoanTermPaymentPlan(monthsLoanTerm, amount, interest, Math.round(monthInstalment * 100) / 100);
@@ -11,13 +12,11 @@ const GetMonthlyInstalmentInfo = (monthsLoanTerm, amount, interest) => {
     }
 };
 
-
 const GetLoanTermPaymentPlan = (monthsLoanTerm, amount, interest, monthInstalment) => {
 
     let paymentPlan = [];
 
     for (let index = 0; index < monthsLoanTerm; index++) {
-
         let monthInterest = 0, instalment = 0, capital = 0, comulativeInterest = 0;
 
         if (index === 0) {
