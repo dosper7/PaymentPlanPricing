@@ -6,7 +6,7 @@
  - Install [Visual Studio Code](https://code.visualstudio.com/)
  - Install [Chrome Debugger extension](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome) for VS Code
 
-# Build & Run SolarSystem app
+# Build & Run app
 ``` bash
 
 Open a command line a follow instrunctions:
