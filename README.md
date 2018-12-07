@@ -20,3 +20,6 @@ npm install
  
 # runs website with hot reload at localhost:3000
 npm run start
+
+# run tests
+npm run test
