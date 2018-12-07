@@ -1,6 +1,5 @@
 import actionTypes from '../actions.js';
 import { produce } from 'immer';
-import InstallmentService from '../../Services/InstalmentService'
 
 const initialtSate = {
     LoanTerms: [3, 6, 12],
@@ -34,10 +33,6 @@ const reducer = (state = initialtSate, action) => {
         default:
             return state;
     }
-}
-
-const getPaymentInfo = (term,amount,interest) =>{
-    return InstallmentService.GetMonthlyInstalmentInfo(term, amount, interest);
 }
 
 export default reducer;
