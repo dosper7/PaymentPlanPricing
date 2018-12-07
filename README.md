@@ -22,4 +22,4 @@ npm install
 npm run start
 
 # run tests
-npm run test
+npm run tests located on test folder
