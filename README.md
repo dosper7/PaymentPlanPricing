@@ -5,6 +5,8 @@
  - Install latest version of [node.js](https://nodejs.org/en/)
  - Install [Visual Studio Code](https://code.visualstudio.com/)
  - Install [Chrome Debugger extension](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome) for VS Code for debugging
+ 
+ Prefered browser : Chrome
 
 # Build & Run app
 ``` bash
