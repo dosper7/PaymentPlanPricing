@@ -2,62 +2,70 @@ import React, { Component } from 'react';
 import Slider from '../components/Slider'
 import { connect } from 'react-redux';
 import actionTypes from '../store/actions.js';
-import InstalmentService from '../Services/InstalmentService.js'
+import WithCard from '../hoc/WithCard';
+import InstalmentPlanTable from '../components/InstalmentPlanTable';
+import InstalmentPlanDetail from '../components/InstalmentPlanDetail';
+import InstallmentService from '../Services/InstalmentService'
 
 class App extends Component {
 
-    state = {
-        selectedInstalment: null,
-        selectedLoanAmount: 100
-    }
-
-    onSliderChange = (value) => {
-        this.setState(() => ({ selectedLoanAmount: value }));
-    }
-
     render() {
-        console.log(InstalmentService.GetMonthlyInstalmentInfo(3,1000,6));
         return (
             <div className="container mt-4">
-                <Slider Description={this.state.selectedLoanAmount} Min={100} Max={2000} Step={100} OnSliderChange={this.onSliderChange} />
+                <WithCard title={"Mash.com Loans :)"}>
+                    <Slider SelectedLoanAmount={this.props.SelectedLoanAmount} Min={this.props.MinLoanAmount} Max={this.props.MaxLoanAmount} Step={this.props.Step} OnSliderChange={this.props.onSelectedLoanAmountChange} >
+                        <div className="form-group col-sm-6">
+                            <label>Interest:</label>
+                            <input type="number" className="form-control" value={this.props.Interest} onChange={(e) => this.props.onChangeInterest(e.target.value)} />
+                        </div>
+                        <div className="form-group col-sm-6">
+                            <label>Amount:</label>
+                            <input type="number" Max={this.props.MaxLoanAmount} className="form-control" value={this.props.SelectedLoanAmount} onChange={(e) => this.props.onSelectedLoanAmountChange(e.target.value)} />
+                        </div>
+                    </Slider>
+                </WithCard>
+                <WithCard>
+                    <InstalmentPlanTable
+                        LoanTerms={this.props.LoanTerms}
+                        Amount={this.props.SelectedLoanAmount}
+                        Interest={this.props.Interest}
+                        onShowPaymentPlanDetail={this.props.onShowPlaymentPlanDetail}
+                        MinInstalmentAmount={this.props.MinInstalmentAmount} />
+                </WithCard>
+
+                {this.props.SelectedPaymentPlan &&
+                    <WithCard title={"Payment info for " + this.props.SelectedPaymentPlan.length + " Months"}>
+                        <InstalmentPlanDetail PaymentPlan={this.props.SelectedPaymentPlan} />
+                    </WithCard>
+                }
             </div>
         );
     }
 }
 
 
-// //Redux bindings
-// const mapStateToProps = state => {
-//     return {
-//         // currentPlanetContext: state.currentPlanetContext,
-//         // planets: state.planets,
-//         // filterText: state.filterText,
-//     }
-// }
+//Redux bindings
+const mapStateToProps = state => {
+    return {
+        MinLoanAmount: state.MinLoanAmount,
+        MaxLoanAmount: state.MaxLoanAmount,
+        LoanStep: state.Step,
+        LoanTerms: state.LoanTerms,
+        SelectedLoanAmount: state.SelectedLoanAmount,
+        Interest: state.Interest,
+        Step: state.Step,
+        SelectedPaymentPlan: state.SelectedPaymentPlan,
+        MinInstalmentAmount: state.MinLoanInstalmentAmount,
+    }
+}
 
 
-// const mapDispatchToProps = (dispatch) => {
-//     return {
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onSelectedLoanAmountChange: (amount) => dispatch({ type: actionTypes.CALCULATE_PAYMENT_PLAN, amount: amount }),
+        onShowPlaymentPlanDetail: (paymentPlan) => dispatch({ type: actionTypes.SHOW_PAYMENT_PLAN, paymentPlan: paymentPlan }),
+        onChangeInterest: (interest) => dispatch({ type: actionTypes.CHANGE_INTEREST, interest: interest }),
+    }
+}
 
-//         // planets
-//         onAddNewPlanet: (planet) => dispatch({ type: actionTypes.ADD_NEW_PLANET, newPlanet: planet }),
-//         onEditPlanet: (planet) => dispatch({ type: actionTypes.EDIT_PLANET, editedPlanet: planet }),
-//         onDeletePlanet: (planet) => dispatch({ type: actionTypes.DELETE_PLANET, planet }),
-//         onSortPlanets: () => { dispatch({ type: actionTypes.SORT_PLANETS }); },
-
-//         //moons
-//         onAddNewMoon: (moon) => { dispatch({ type: actionTypes.ADD_NEW_MOON, newMoon: moon }); },
-//         onEditMoon: (moon) => { dispatch({ type: actionTypes.EDIT_MOON, moon }); },
-//         onShowMoonInfo: (planet) => { dispatch({ type: actionTypes.SHOW_MOON_INFO, planet }) },
-//         onDeleteMoon: (moon) => {
-//             setTimeout(() => {
-//                 dispatch({ type: actionTypes.DELETE_MOON, moon: moon });
-//             }, 1000);
-
-//         },
-
-//     }
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(App);
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
